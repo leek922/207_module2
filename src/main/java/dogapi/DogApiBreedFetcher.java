@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class DogApiBreedFetcher implements BreedFetcher {
      * @throws BreedNotFoundException if the breed does not exist (or if the API call fails for any reason)
      */
     @Override
-    public List<String> getSubBreeds(String breed) {
+    public List<String> getSubBreeds(String breed) throws BreedNotFoundException {
         // TODO Task 1: Complete this method based on its provided documentation
         //      and the documentation for the dog.ceo API. You may find it helpful
         //      to refer to the examples of using OkHttpClient from the last lab,
@@ -49,10 +50,14 @@ public class DogApiBreedFetcher implements BreedFetcher {
                 }
                 return subBreedList;
             }
+            else {
+                throw new BreedNotFoundException(breed);
+            }
 
-        } catch (IOException breedNotFound) {
-            return new ArrayList<>();
+        } catch (Exception e) {
+            throw new BreedNotFoundException(breed);
+
         }
-        return new ArrayList<>();
+
     }
 }
