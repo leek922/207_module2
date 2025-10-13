@@ -26,6 +26,10 @@ public class Main {
     public static int getNumberOfSubBreeds(String breed, BreedFetcher breedFetcher) {
         // TODO Task 3 implement this code so that it is entirely consistent with its provided documentation.
         // return statement included so that the starter code can compile and run.
-        return -1;
+        List<String> subBreedList = breedFetcher.getSubBreeds(breed);
+        if (!subBreedList.isEmpty()) {
+            return subBreedList.size();
+        }
+        return 0;
     }
 }

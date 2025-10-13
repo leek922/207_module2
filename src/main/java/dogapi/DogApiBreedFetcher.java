@@ -15,7 +15,9 @@ import java.util.*;
  * exceptions to align with the requirements of the BreedFetcher interface.
  */
 public class DogApiBreedFetcher implements BreedFetcher {
-    private final OkHttpClient client = new OkHttpClient();
+    private static final String MESSAGE = "message";
+    private static final String STATUS = "status";
+    private static final String SUCCESS = "success";
 
     /**
      * Fetch the list of sub breeds for the given breed from the dog.ceo API.
@@ -30,6 +32,27 @@ public class DogApiBreedFetcher implements BreedFetcher {
         //      to refer to the examples of using OkHttpClient from the last lab,
         //      as well as the code for parsing JSON responses.
         // return statement included so that the starter code can compile and run.
+        final OkHttpClient client = new OkHttpClient();
+        final String request_url = "https://dog.ceo/api/breed/"+ breed + "/list";
+        final Request request = new Request.Builder().url(request_url).build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (Objects.equals(responseBody.getString(STATUS), SUCCESS)) {
+                final JSONArray subBreeds = responseBody.getJSONArray(MESSAGE);
+                List<String> subBreedList = new ArrayList<>();
+
+                for (int i = 0; i < subBreeds.length(); i++) {
+                    subBreedList.add(subBreeds.getString(i));
+                }
+                return subBreedList;
+            }
+
+        } catch (IOException breedNotFound) {
+            return new ArrayList<>();
+        }
         return new ArrayList<>();
     }
 }

@@ -22,7 +22,9 @@ public class CachingBreedFetcher implements BreedFetcher {
     @Override
     public List<String> getSubBreeds(String breed) {
         // return statement included so that the starter code can compile and run.
-        return new ArrayList<>();
+
+        callsMade += 1;
+        return breed;
     }
 
     public int getCallsMade() {
